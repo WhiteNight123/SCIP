@@ -218,7 +218,10 @@ def multiadder(n):
     True
     """
     "*** YOUR CODE HERE ***"
-
+    if n == 1:
+        return lambda x: x
+    else:
+        return lambda a: lambda b: multiadder(n - 1)(a + b)
 
 ##########################
 # Just for fun Questions #
@@ -235,12 +238,18 @@ def make_anonymous_factorial():
     >>> check(HW_SOURCE_FILE, 'make_anonymous_factorial', ['Assign', 'AugAssign', 'FunctionDef', 'Recursion'])
     True
     """
-    return 'YOUR_EXPRESSION_HERE'
+    return (lambda f: lambda k: f(f, k))(lambda f, k: k if k == 1 else mul(k, f(f, sub(k, 1))))
 
 
 def Y(f): return (lambda x: x(x))(lambda x: f(lambda z: x(x)(z)))
-def fib_maker(f): return lambda r: 'YOUR_EXPRESSION_HERE'
-def number_of_six_maker(f): return lambda r: 'YOUR_EXPRESSION_HERE'
+
+
+def fib_maker(f): return lambda r: 0 if r == 0 else 1 if r == 1 else f(
+    r - 1) + f(r - 2)
+
+
+def number_of_six_maker(
+    f): return lambda r: 0 if r < 6 else f(r // 10) + 1 if r % 10 == 6 else f(r // 10)
 
 
 my_fib = Y(fib_maker)
