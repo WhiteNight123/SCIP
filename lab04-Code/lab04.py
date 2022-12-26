@@ -62,6 +62,7 @@ def planet(size):
     """
     assert size > 0
     "*** YOUR CODE HERE ***"
+    return ['planet', size]
 
 
 def size(w):
@@ -73,6 +74,7 @@ def size(w):
     """
     assert is_planet(w), 'must call size on a planet'
     "*** YOUR CODE HERE ***"
+    return w[1]
 
 
 def is_planet(w):
@@ -126,8 +128,31 @@ def balanced(m):
     >>> balanced(mobile(arm(1, w), arm(1, v)))
     False
     """
-    assert is_mobile(m)
+    # assert is_mobile(m)
     "*** YOUR CODE HERE ***"
+    # if total_weight(end(left(m))) * length(left(m)) == total_weight(end(right(m))) * length(right(m)):
+    #     if is_planet(end(left(m))) and is_planet(end(right(m))):
+    #         return True
+    #     elif is_planet(end(left(m))):
+    #         if not balanced(end(right(m))):
+    #             return False
+    #     elif is_planet(end(right(m))):
+    #         if not balanced(end(left(m))):
+    #             return False
+    #     else:
+    #         for i in [left(m), right(m)]:
+    #             if not balanced(end(i)):
+    #                 return False
+    #     return True
+    # else:
+    #     return False
+    if is_planet(m):
+        return True
+    else:
+        left_end, right_end = end(left(m)), end(right(m))
+        torque_left = length(left(m)) * total_weight(left_end)
+        torque_right = length(right(m)) * total_weight(right_end)
+        return torque_left == torque_right and balanced(left_end) and balanced(right_end)
 
 
 def totals_tree(m):
@@ -155,8 +180,13 @@ def totals_tree(m):
           3
           2
     """
-    assert is_mobile(m) or is_planet(m)
+    # assert is_mobile(m) or is_planet(m)
     "*** YOUR CODE HERE ***"
+    if is_planet(m):
+        return tree(size(m))
+    else:
+        branches = [totals_tree(end(f(m))) for f in [left, right]]
+        return tree(sum([label(b) for b in branches]), branches)
 
 
 def preorder(t):
@@ -170,6 +200,12 @@ def preorder(t):
     [2, 4, 6]
     """
     "*** YOUR CODE HERE ***"
+    if is_leaf(t):
+        return [label(t)]
+    k = [label(t)]
+    for branch in branches(t):
+        k += preorder(branch)
+    return k
 
 
 def has_path(t, word):
@@ -202,6 +238,14 @@ def has_path(t, word):
     """
     assert len(word) > 0, 'no path for empty word.'
     "*** YOUR CODE HERE ***"
+    if label(t) != word[0]:
+        return False
+    elif len(word) == 1:
+        return True
+    for b in branches(t):
+        if has_path(b, word[1:]):
+            return True
+    return False
 
 
 def insert_items(lst, entry, elem):
@@ -221,3 +265,10 @@ def insert_items(lst, entry, elem):
     True
     """
     "*** YOUR CODE HERE ***"
+    i, b =0, len(lst)
+    while i < b:
+        if lst[i] == entry:
+            i += 1
+            lst.insert(i, elem)
+        i += 1
+    return lst
