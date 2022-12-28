@@ -41,6 +41,8 @@ def construct_sent(word, table):
     result = ''
     while word not in ['.', '!', '?']:
         "*** YOUR CODE HERE ***"
+        result += ' ' + word
+        word = random.choice(table[word])
     return result.strip() + word
 
 
@@ -51,9 +53,14 @@ def shakespeare_tokens(url='http://composingprograms.com/shakespeare.txt'):
     shakespeare = urlopen(url)
     return shakespeare.read().decode(encoding='ascii').split()
 
+
+def sent():
+    return construct_sent('The', table)
+
+
 # Uncomment the following two lines
-# tokens = shakespeare_tokens()
-# table = build_successors_table(tokens)
+tokens = shakespeare_tokens()
+table = build_successors_table(tokens)
 
 
 def random_sent():
