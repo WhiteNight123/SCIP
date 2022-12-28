@@ -2,7 +2,7 @@
 
 > ### Fall 2022, Nanjing University
 
-## **Lab，Homework and Project Slotions**
+## **Lab，Homework and Project Solutions**
 
 Textbooks and References:
 
